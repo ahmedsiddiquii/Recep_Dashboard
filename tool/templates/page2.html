@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+  <!----======== CSS ======== -->
+  <link rel="stylesheet" href="../static/css/side.css">
+
+
+  <!----===== Boxicons CSS ===== -->
+  <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+<style>
+body {
+  font-family: "Lato", sans-serif;
+}
+
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: rgba(28, 28, 202, 0.896);
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+}
+
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #f1f1f1;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidenav a:hover {
+  color: #818181;
+}
+
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+</style>
+  <style>
+  *{
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
+h2{
+    text-align: center;
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: white;
+    padding: 30px 0;
+}
+
+/* Table Styles */
+
+.table-wrapper{
+    margin: 4px 5px 80px 100px;
+    box-shadow: 0px 35px 50px rgba( 0, 0, 0, 0.2 );
+    padding: 0 20px;
+}
+
+.fl-table {
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: normal;
+    border: none;
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 100%;
+    white-space: nowrap;
+    background-color: white;
+}
+
+.fl-table td, .fl-table th {
+    text-align: center;
+    padding: 8px;
+}
+
+.fl-table td {
+    border-right: 1px solid #f8f8f8;
+    font-size: 12px;
+}
+
+.fl-table thead th {
+    color: #ffffff;
+    background: #4FC3A1;
+}
+
+
+.fl-table thead th:nth-child(odd) {
+    color: #ffffff;
+    background: #324960;
+}
+
+.fl-table tr:nth-child(even) {
+    background: #F8F8F8;
+}
+
+/* Responsive */
+
+@media (max-width: 767px) {
+    .fl-table {
+        display: block;
+        width: 100%;
+    }
+    .table-wrapper:before{
+        content: "Scroll horizontally >";
+        display: block;
+        text-align: right;
+        font-size: 11px;
+        color: white;
+        padding: 0 0 10px;
+    }
+    .fl-table thead, .fl-table tbody, .fl-table thead th {
+        display: block;
+    }
+    .fl-table thead th:last-child{
+        border-bottom: none;
+    }
+    .fl-table thead {
+        float: left;
+    }
+    .fl-table tbody {
+        width: auto;
+        position: relative;
+        overflow-x: auto;
+    }
+    .fl-table td, .fl-table th {
+        padding: 20px .625em .625em .625em;
+        height: 60px;
+        vertical-align: middle;
+        box-sizing: border-box;
+        overflow-x: hidden;
+        overflow-y: auto;
+        width: 120px;
+        font-size: 13px;
+        text-overflow: ellipsis;
+    }
+    .fl-table thead th {
+        text-align: left;
+        border-bottom: 1px solid #f7f7f9;
+    }
+    .fl-table tbody tr {
+        display: table-cell;
+    }
+    .fl-table tbody tr:nth-child(odd) {
+        background: none;
+    }
+    .fl-table tr:nth-child(even) {
+        background: transparent;
+    }
+    .fl-table tr td:nth-child(odd) {
+        background: #F8F8F8;
+        border-right: 1px solid #E6E4E4;
+    }
+    .fl-table tr td:nth-child(even) {
+        border-right: 1px solid #E6E4E4;
+    }
+    .fl-table tbody td {
+        display: block;
+        text-align: center;
+    }
+}
+</style>
+  <style>
+.pagination {
+  display: inline-block;
+  margin :  10px 10px 110px 110px;
+}
+
+.pagination a {
+  color: black;
+  background-color:white;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+
+}
+
+.pagination a.active {
+  background-color: blue;
+  color: white;
+}
+
+.pagination a:hover:not(.active) {background-color: #ddd;}
+</style>
+</head>
+<body>
+
+<nav class="sidebar close">
+    <header>
+      <div class="image-text">
+        <span class="image">
+          <img src="../static/images/logo.jpeg" alt="">
+        </span>
+
+        <div class="text logo-text">
+          <span class="name">ITSS</span>
+          <span class="profession">Leads</span>
+        </div>
+      </div>
+
+      <i style="background-color:#347afe;" class='bx bx-chevron-right toggle'></i>
+    </header>
+
+    <div class="menu-bar">
+      <div class="menu">
+
+
+        <ul class="menu-links">
+          <li class="nav-link">
+            <a href="{% url 'dashboard' %}">
+              <i class='bx bx-home-alt icon'></i>
+              <span class="text nav-text">Leads</span>
+            </a>
+          </li>
+
+          <li class="nav-link">
+            <a href="{% url 'task' %}">
+              <i class='bx bx-bar-chart-alt-2 icon'></i>
+              <span class="text nav-text">Tasks</span>
+            </a>
+          </li>
+
+          <li class="nav-link">
+            <a href="{% url 'jobs' %}">
+              <i class='bx bx-bar-chart-alt-2 icon'></i>
+              <span class="text nav-text">Jobs</span>
+            </a>
+          </li>
+
+
+        </ul>
+      </div>
+
+      <div class="bottom-content">
+        <li class="">
+          <a href="{% url 'logout' %}">
+            <i class='bx bx-log-out icon'></i>
+            <span class="text nav-text">Logout</span>
+          </a>
+        </li>
+
+
+      </div>
+    </div>
+
+  </nav>
+
+<div>
+
+<section class="home"> 
+  <form action="{% url 'task' %}" method="post">
+      {% csrf_token %}
+          <input style="margin:10px 0px 10px ;background-color:white;border:none;width:600px;height:50px;border-radius:6px;padding-left: 10px;" type="text" placeholder="Navigator Link / Jobs" name="navigator_link" style="width: 65%;">
+    <input style="margin:10px 0px 10px ;background-color:white;border:none;width:200px;height:50px;border-radius:6px;text-align: center;" type="text" placeholder="No. Of leads/No. Of Jobs" name="no_of_leads" style="width: 65%;">
+    <button style="margin:30px 0px 30px 10px;background-color:white;border:none;width:100px;height:50px;border-radius:6px;" type="submit">Add</button>
+        </form>
+    <h2 style="color:#347afe; margin-right: 30%;">Pending Tasks</h2>
+    <div style ="width:50%;" class="table-wrapper">
+
+    <table class="fl-table">
+        <thead>
+            <tr>
+                <th scope="col">Number of leads</th>
+                <th scope="col">Status</th>
+                <th scope="col">Sales Nvigator Link</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in page_obj %}
+            <tr>
+                <td>{{ item.no_of_leads }}</td>
+                <td>{{ item.status }}</td>
+                <td><a href="{{ item.navigator_link }}" class="button">Go To Filtered Page</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+</section>
+
+
+<script>
+    const body = document.querySelector('body'),
+      sidebar = body.querySelector('nav'),
+      toggle = body.querySelector(".toggle"),
+      searchBtn = body.querySelector(".search-box"),
+      modeSwitch = body.querySelector(".toggle-switch"),
+      modeText = body.querySelector(".mode-text");
+    toggle.addEventListener("click", () => {
+      sidebar.classList.toggle("close");
+    })
+    searchBtn.addEventListener("click", () => {
+      sidebar.classList.remove("close");
+    })
+    modeSwitch.addEventListener("click", () => {
+      body.classList.toggle("dark");
+      if (body.classList.contains("dark")) {
+        modeText.innerText = "Light mode";
+      } else {
+        modeText.innerText = "Dark mode";
+      }
+    });
+  </script>
+<script>
+function openNav() {
+  document.getElementById("mySidenav").style.width = "250px";
+}
+
+function closeNav() {
+  document.getElementById("mySidenav").style.width = "0";
+}
+</script>
+<script src="js/jquery-3.3.1.min.js"></script>
+<script src="js/popper.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/main.js"></script>
+  <script>
+  // get the current position of the page
+  var scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+
+  // store the current position in local storage
+  localStorage.setItem('scrollPosition', scrollPosition);
+
+  // restore the scroll position on page load
+  window.onload = function() {
+    var savedPosition = localStorage.getItem('scrollPosition');
+    if (savedPosition) {
+      window.scrollTo(0, savedPosition);
+      localStorage.removeItem('scrollPosition');
+    }
+  };
+</script>
+
+</body>
+</html>

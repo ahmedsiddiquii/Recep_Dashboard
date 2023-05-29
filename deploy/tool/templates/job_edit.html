@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+  <!----======== CSS ======== -->
+  <link rel="stylesheet" href="../static/css/side.css">
+
+
+  <!----===== Boxicons CSS ===== -->
+  <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+
+</head>
+<body>
+
+<nav class="sidebar close">
+    <header>
+      <div class="image-text">
+        <span class="image">
+          <img src="../static/images/logo.jpeg" alt="">
+        </span>
+
+        <div class="text logo-text">
+          <span class="name">ITSS</span>
+          <span class="profession">Leads</span>
+        </div>
+      </div>
+
+      <i style="background-color:#347afe;" class='bx bx-chevron-right toggle'></i>
+    </header>
+
+    <div class="menu-bar">
+      <div class="menu">
+
+
+        <ul class="menu-links">
+          <li class="nav-link">
+            <a href="{% url 'dashboard' %}">
+              <i class='bx bx-home-alt icon'></i>
+              <span class="text nav-text">Leads</span>
+            </a>
+          </li>
+
+          <li class="nav-link">
+            <a href="{% url 'task' %}">
+              <i class='bx bx-bar-chart-alt-2 icon'></i>
+              <span class="text nav-text">Tasks</span>
+            </a>
+          </li>
+
+
+
+
+        </ul>
+      </div>
+
+      <div class="bottom-content">
+        <li class="">
+          <a href="#">
+            <i class='bx bx-log-out icon'></i>
+            <span class="text nav-text">Logout</span>
+          </a>
+        </li>
+
+
+      </div>
+    </div>
+
+  </nav>
+<style>.form-wrapper {
+  max-width: 600px;
+  margin: 0 auto;
+  margin-top:40px;
+  margin-bottom:40px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color:white;
+}
+
+.lead-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color:#347afe;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+textarea,
+select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #555;
+  width: 100%;
+  max-width: 500px;
+}
+
+select {
+  cursor: pointer;
+}
+
+button[type="submit"] {
+  padding: 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  font-family: Arial, Helvetica, sans-serif;
+  cursor: pointer;
+}
+
+button[type="submit"]:hover {
+  background-color: #3e8e41;
+}
+</style>
+<div class="form-wrapper">
+  <form class="lead-form" method="POST" action="{% url 'update_job' %}">
+    {% csrf_token %}
+    <h2>Edit Job</h2>
+    <div class="form-group">
+      <label for="first_name">Keyword:</label>
+      <input type="text" id="keyword" name="keyword" value="{{ lead.keword }}">
+    </div>
+    <div class="form-group">
+      <label for="last_name">Job Title:</label>
+      <input type="text" id="Job Title" name="Job Title" value="{{ lead.job_title }}">
+    </div>
+    <div class="form-group">
+      <label for="last_name">Location:</label>
+      <input type="text" id="location" name="location" value="{{ lead.location }}">
+    </div>
+    <div class="form-group">
+      <label for="title">Company Name:</label>
+      <input type="text" id="Company Name" name="Company Name" value="{{ lead.company_name }}">
+    </div>
+
+    <div class="form-group">
+      <label for="email">Company Website:</label>
+      <input type="text" id="Company Website" name="Company Website" value="{{ lead.company_website }}">
+    </div>
+    <div class="form-group">
+      <label for="phone">Source Website:</label>
+      <input type="text" id="Source Website" name="Source Website" value="{{ lead.source_website }}">
+    </div>
+    <div class="form-group">
+      <label for="company_name">Source Link:</label>
+      <input type="text" id="Source Link" name="Source Link" value="{{ lead.source_link }}">
+    </div>
+    <div class="form-group">
+      <label for="Company Email">Company Email:</label>
+      <input type="text" id="Company Email" name="Company Email" value="{{ lead.company_email }}">
+    </div>
+    <div class="form-group">
+      <label for="company_website">Description:</label>
+      <textarea style="width:500px; height:100px;" id="Description" name="Description" value="{{ lead.description }}">{{ lead.description }}</textarea>
+    </div>
+    <div class="form-group">
+      <label for="company_website">Company Phone Number:</label>
+      <input type="text" id="Company Phone Number" name="Company Phone Number" value="{{ lead.Company_Phone_Number }}">
+    </div>
+
+    <div class="form-group">
+      <button type="submit" name="lead_id" value="{{ lead.id }}" class="btn btn-primary">Save Changes</button>
+<!--      <button type="submit" name="lead_id" value="{{ lead.id }}" class="btn btn-primary">Save Changes</button>-->
+    </div>
+  </form>
+</div>
+</body>
+</html>
+<script>
+    const body = document.querySelector('body'),
+      sidebar = body.querySelector('nav'),
+      toggle = body.querySelector(".toggle"),
+      searchBtn = body.querySelector(".search-box"),
+      modeSwitch = body.querySelector(".toggle-switch"),
+      modeText = body.querySelector(".mode-text");
+    toggle.addEventListener("click", () => {
+      sidebar.classList.toggle("close");
+    })
+    searchBtn.addEventListener("click", () => {
+      sidebar.classList.remove("close");
+    })
+    modeSwitch.addEventListener("click", () => {
+      body.classList.toggle("dark");
+      if (body.classList.contains("dark")) {
+        modeText.innerText = "Light mode";
+      } else {
+        modeText.innerText = "Dark mode";
+      }
+    });
+  </script>
+<script>
+function openNav() {
+  document.getElementById("mySidenav").style.width = "250px";
+}
+
+function closeNav() {
+  document.getElementById("mySidenav").style.width = "0";
+}
+</script>
+<script src="js/jquery-3.3.1.min.js"></script>
+<script src="js/popper.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/main.js"></script>
+  <script>
+  // get the current position of the page
+  var scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+
+  // store the current position in local storage
+  localStorage.setItem('scrollPosition', scrollPosition);
+
+  // restore the scroll position on page load
+  window.onload = function() {
+    var savedPosition = localStorage.getItem('scrollPosition');
+    if (savedPosition) {
+      window.scrollTo(0, savedPosition);
+      localStorage.removeItem('scrollPosition');
+    }
+  };
+</script>
+</html>
