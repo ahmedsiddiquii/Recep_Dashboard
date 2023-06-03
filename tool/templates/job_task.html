@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+  <!----======== CSS ======== -->
+  <link rel="stylesheet" href="../static/css/side.css">
+
+
+  <!----===== Boxicons CSS ===== -->
+  <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+<style>
+body {
+  font-family: "Lato", sans-serif;
+}
+
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: rgba(28, 28, 202, 0.896);
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+}
+
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #f1f1f1;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidenav a:hover {
+  color: #818181;
+}
+
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+</style>
+  <style>
+  *{
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
+h2{
+    text-align: center;
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: white;
+    padding: 30px 0;
+}
+
+/* Table Styles */
+
+.table-wrapper{
+    margin: 4px 5px 80px 100px;
+    box-shadow: 0px 35px 50px rgba( 0, 0, 0, 0.2 );
+    padding: 0 20px;
+}
+
+.fl-table {
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: normal;
+    border: none;
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 100%;
+    white-space: nowrap;
+    background-color: white;
+}
+
+.fl-table td, .fl-table th {
+    text-align: center;
+    padding: 8px;
+}
+
+.fl-table td {
+    border-right: 1px solid #f8f8f8;
+    font-size: 12px;
+}
+
+.fl-table thead th {
+    color: #ffffff;
+    background: #4FC3A1;
+}
+
+
+.fl-table thead th:nth-child(odd) {
+    color: #ffffff;
+    background: #324960;
+}
+
+.fl-table tr:nth-child(even) {
+    background: #F8F8F8;
+}
+
+/* Responsive */
+
+@media (max-width: 767px) {
+    .fl-table {
+        display: block;
+        width: 100%;
+    }
+    .table-wrapper:before{
+        content: "Scroll horizontally >";
+        display: block;
+        text-align: right;
+        font-size: 11px;
+        color: white;
+        padding: 0 0 10px;
+    }
+    .fl-table thead, .fl-table tbody, .fl-table thead th {
+        display: block;
+    }
+    .fl-table thead th:last-child{
+        border-bottom: none;
+    }
+    .fl-table thead {
+        float: left;
+    }
+    .fl-table tbody {
+        width: auto;
+        position: relative;
+        overflow-x: auto;
+    }
+    .fl-table td, .fl-table th {
+        padding: 20px .625em .625em .625em;
+        height: 60px;
+        vertical-align: middle;
+        box-sizing: border-box;
+        overflow-x: hidden;
+        overflow-y: auto;
+        width: 120px;
+        font-size: 13px;
+        text-overflow: ellipsis;
+    }
+    .fl-table thead th {
+        text-align: left;
+        border-bottom: 1px solid #f7f7f9;
+    }
+    .fl-table tbody tr {
+        display: table-cell;
+    }
+    .fl-table tbody tr:nth-child(odd) {
+        background: none;
+    }
+    .fl-table tr:nth-child(even) {
+        background: transparent;
+    }
+    .fl-table tr td:nth-child(odd) {
+        background: #F8F8F8;
+        border-right: 1px solid #E6E4E4;
+    }
+    .fl-table tr td:nth-child(even) {
+        border-right: 1px solid #E6E4E4;
+    }
+    .fl-table tbody td {
+        display: block;
+        text-align: center;
+    }
+}
+</style>
+  <style>
+.pagination {
+  display: inline-block;
+  margin :  10px 10px 110px 110px;
+}
+
+.pagination a {
+  color: black;
+  background-color:white;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+
+}
+
+.pagination a.active {
+  background-color: blue;
+  color: white;
+}
+
+.pagination a:hover:not(.active) {background-color: #ddd;}
+</style>
+    <style>
+        /* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+    </style>
+</head>
+<body>
+
+<nav class="sidebar close">
+    <header>
+      <div class="image-text">
+        <span class="image">
+          <img src="../static/images/logo.jpeg" alt="">
+        </span>
+
+        <div class="text logo-text">
+          <span class="name">ITSS</span>
+          <span class="profession">Leads</span>
+        </div>
+      </div>
+
+      <i style="background-color:#347afe;" class='bx bx-chevron-right toggle'></i>
+    </header>
+
+    <div class="menu-bar">
+      <div class="menu">
+
+
+        <ul class="menu-links">
+          <li class="nav-link">
+            <a href="{% url 'dashboard' %}">
+              <i class='bx bx-home-alt icon'></i>
+              <span class="text nav-text">Leads</span>
+            </a>
+          </li>
+
+          <li class="nav-link">
+            <a href="{% url 'task' %}">
+              <i class='bx bx-bar-chart-alt-2 icon'></i>
+              <span class="text nav-text">Tasks</span>
+            </a>
+          </li>
+
+          <li class="nav-link">
+            <a href="{% url 'jobs_task' %}">
+              <i class='bx bx-bar-chart-alt-2 icon'></i>
+              <span class="text nav-text">Jobs</span>
+            </a>
+          </li>
+
+
+        </ul>
+      </div>
+
+      <div class="bottom-content">
+        <li class="">
+          <a href="{% url 'logout' %}">
+            <i class='bx bx-log-out icon'></i>
+            <span class="text nav-text">Logout</span>
+          </a>
+        </li>
+
+
+      </div>
+    </div>
+
+  </nav>
+
+<div>
+
+<section class="home">
+        <form action="{% url 'jobs_task' %}" method="post">
+            {% csrf_token %}
+            <div><label for="linkedin_filter_link" style="margin: 20px 0px 20px 110px;">Linkedin</label>
+                <input
+          style="
+            margin: 10px 10px 10px 56px;
+            background-color: white;
+            border: none;
+            width: 600px;
+            height: 50px;
+            border-radius: 6px;
+            padding-left: 10px;
+          "
+          type="text"
+          placeholder="Filtered Link"
+          id="linkedin_filter_link"
+          name="linkedin_filter_link"
+          style="width: 23%"
+          value="{{ query }}"
+        /></div>
+
+            <div><label for="glassdoor_filter_link" style="margin: 20px 0px 20px 110px;">GlassDoor</label>
+                <input
+          style="
+            margin: 10px 10px 10px 40px;
+            background-color: white;
+            border: none;
+            width: 600px;
+            height: 50px;
+            border-radius: 6px;
+            padding-left: 10px;
+          "
+          type="text"
+          placeholder="Filtered Link"
+          id="glassdoor_filter_link"
+          name="glassdoor_filter_link"
+          style="width: 23%"
+          value="{{ query }}"
+        /></div>
+            <div><label for="indeed_filter_link" style="margin: 20px 0px 20px 110px;">Indeed</label>
+                <input
+          style="
+            margin: 10px 10px 10px 65px;
+            background-color: white;
+            border: none;
+            width: 600px;
+            height: 50px;
+            border-radius: 6px;
+            padding-left: 10px;
+          "
+          type="text"
+          placeholder="Filtered Link"
+          id="indeed_filter_link"
+          name="indeed_filter_link"
+          style="width: 23%"
+          value="{{ query }}"
+        /></div>
+            <div>
+            <label for="friendly_name" style="margin: 20px 0px 20px 110px;">Task Name</label>
+        <input
+          style="
+            margin: 10px 0px 10px 30px;
+            background-color: white;
+            border: none;
+            width: 250px;
+            height: 50px;
+            border-radius: 6px;
+            padding-left: 10px;
+          "
+          type="text"
+          placeholder="Friendly Name"
+          name="friendly_name"
+          id="friendly_name"
+          style="width: 23%"
+          value="{{ query }}"
+        />
+                <button
+          style="
+            margin: 30px 0px 30px 10px;
+            background-color: white;
+            border: none;
+            width: 100px;
+            height: 50px;
+            border-radius: 6px;
+          "
+          type="submit">
+          Add Task
+        </button>
+            </div>
+
+
+        </form>
+    <form method="get" action="{% url 'jobs' %}">
+
+        <div style ="width:50%;" class="table-wrapper">
+
+
+            <table class="fl-table">
+              <thead>
+                <tr>
+                    <th scope="col"></th>
+                  <th scope="col">Friendly Name</th>
+                  <th scope="col">LinkedIn URL</th>
+                  <th scope="col">Glassdoor URL</th>
+                  <th scope="col">Indeed URL</th>
+                  <th scope="col">Keep Updating</th>
+                  <th scope="col">Last Updated</th>
+                    <th scope="col">Next Update</th>
+                    <th scope="col">Activity Status</th>
+                    <th scope="col">Counter</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for item in page_obj %}
+                <tr>
+
+                    <td><input type="checkbox" id="{{ item.id }}" name="{{ item.id }}"></td>
+                    <td>{{ item.friendly_name }}</td>
+                    <td><a href="{{ item.linkedin_link }}">View</a></td>
+                    <td><a href="{{ item.glassdoor_link }}">View</a></td>
+                    <td><a href="{{ item.indeed_link }}">View</a></td>
+
+                    <td><!-- Rounded switch -->
+                    <label class="switch">
+                        {% if item.status == 'active' %}
+                      <input type="checkbox" checked class="statusToggle" data-job-id="{{ item.id }}">
+                        {% else %}
+                        <input type="checkbox" class="statusToggle" data-job-id="{{ item.id }}">
+                        {% endif %}
+                      <span class="slider round"></span>
+                    </label></td>
+                    <td>{{ item.last_updated }}</td>
+                    <td>{{ item.next_update }}</td>
+                    <td>{{ item.activity_status }}</td>
+                    <td>
+                      <ul>
+                        <li>Linked: <span class="count" id="linkedin-count-{{ item.id }}" data-job-id="{{ item.id }}">{{ linkedin_count }}</span></li>
+                        <li>GlassDoor: <span class="count" id="glassdoor-count-{{ item.id }}" data-job-id="{{ item.id }}">{{ glassdoor_count }}</span></li>
+                        <li>Indeed: <span class="count" id="indeed-count-{{ item.id }}" data-job-id="{{ item.id }}">{{ indeed_count }}</span></li>
+                      </ul>
+                    </td>
+
+
+                </tr>
+                {% endfor %}
+            </tbody>
+              </tbody>
+            </table>
+          </div> <button
+          style="
+            margin: 30px 3px 30px 110px;
+            background-color: blue;
+            color:white;
+            border: none;
+            width: 150px;
+            height: 50px;
+            border-radius: 6px;
+          " type="submit">
+          View Selected Tasks
+        </button>
+
+        </form>
+
+
+    </section>
+
+
+<script>
+    const body = document.querySelector('body'),
+      sidebar = body.querySelector('nav'),
+      toggle = body.querySelector(".toggle"),
+      searchBtn = body.querySelector(".search-box"),
+      modeSwitch = body.querySelector(".toggle-switch"),
+      modeText = body.querySelector(".mode-text");
+    toggle.addEventListener("click", () => {
+      sidebar.classList.toggle("close");
+    })
+    searchBtn.addEventListener("click", () => {
+      sidebar.classList.remove("close");
+    })
+    modeSwitch.addEventListener("click", () => {
+      body.classList.toggle("dark");
+      if (body.classList.contains("dark")) {
+        modeText.innerText = "Light mode";
+      } else {
+        modeText.innerText = "Dark mode";
+      }
+    });
+  </script>
+<script>
+function openNav() {
+  document.getElementById("mySidenav").style.width = "250px";
+}
+
+function closeNav() {
+  document.getElementById("mySidenav").style.width = "0";
+}
+</script>
+<script src="js/jquery-3.3.1.min.js"></script>
+<script src="js/popper.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/main.js"></script>
+  <script>
+  // get the current position of the page
+  var scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+
+  // store the current position in local storage
+  localStorage.setItem('scrollPosition', scrollPosition);
+
+  // restore the scroll position on page load
+  window.onload = function() {
+    var savedPosition = localStorage.getItem('scrollPosition');
+    if (savedPosition) {
+      window.scrollTo(0, savedPosition);
+      localStorage.removeItem('scrollPosition');
+    }
+  };
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+$(document).ready(function() {
+  // Retrieve the CSRF token from the cookie
+  function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      var cookies = document.cookie.split(';');
+      for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+
+  $('.statusToggle').change(function() {
+    var checked = $(this).is(':checked');
+    var jobId = $(this).attr('data-job-id');
+
+    // Retrieve the CSRF token
+    var csrftoken = getCookie('csrftoken');
+
+    // Send AJAX request to update the status
+    $.ajax({
+      type: 'POST',
+      url: '/update_status',
+      data: {
+        'job_id': jobId,
+        'status': checked ? 'active' : 'inactive'
+      },
+      beforeSend: function(xhr) {
+        // Include the CSRF token in the request headers
+        xhr.setRequestHeader('X-CSRFToken', csrftoken);
+      },
+      success: function(response) {
+        console.log('Status updated successfully');
+      },
+      error: function(xhr, errmsg, err) {
+        console.log('Error occurred while updating status');
+      }
+    });
+  });
+});
+</script>
+
+<script>
+  function updateCounts() {
+    var countElements = document.getElementsByClassName("count");
+
+    Array.from(countElements).forEach(function (element) {
+      var jobId = element.dataset.jobId;
+      var url = "/get-updated-counts/" + jobId + "/"; // Updated URL with job_id
+
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", url, true);
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          var response = JSON.parse(xhr.responseText);
+          document.getElementById("linkedin-count-" + jobId).innerText = response.linkedin_count;
+          document.getElementById("glassdoor-count-" + jobId).innerText = response.glassdoor_count;
+          document.getElementById("indeed-count-" + jobId).innerText = response.indeed_count;
+        }
+      };
+      xhr.send();
+    });
+  }
+
+  updateCounts();
+  setInterval(updateCounts, 5000);
+</script>
+
+
+
+
+</body>
+</html>

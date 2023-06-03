@@ -255,7 +255,7 @@
             </li>
 
             <li class="nav-link">
-              <a href="{% url 'jobs' %}">
+              <a href="{% url 'jobs_task' %}">
                 <i class="bx bx-bar-chart-alt-2 icon"></i>
                 <span class="text nav-text">Jobs</span>
               </a>
@@ -277,7 +277,9 @@
     </nav>
 
     <section class="home">
-      <form action="{% url 'search_lead' %}">
+
+      <form action="{% url 'apply_export' %}" method="get">
+        <div>
         <input
           style="
             margin: 30px 0px 30px 110px;
@@ -305,6 +307,153 @@
           "
           type="submit">
           Search
+        </button>
+          </div>
+        <select style="
+            margin: 10px 0px 30px 110px;
+            background-color: white;
+            border: none;
+            width: 150px;
+            height: 50px;
+            border-radius: 6px;
+            padding-left: 10px;
+          " name="email-option" id="email-option">
+          <option>Show All</option>
+          {% if email_option == "With emails" %}
+          <option selected>With emails</option>
+          {% else %}
+
+          <option>With emails</option>
+          {% endif %}
+          {% if email_option == 'No emails' %}
+           <option selected>No emails</option>
+          {% else %}
+          <option>No emails</option>
+          {% endif %}
+        </select>
+
+
+        <select style="
+            margin: 30px 0px 30px 20px;
+            background-color: white;
+            border: none;
+            width: 150px;
+            height: 50px;
+            border-radius: 6px;
+            padding-left: 2px;
+          " name="number-option" id="number-option">
+          <option>Show All</option>
+          {% if number_option == 'With Phone No.' %}
+          <option selected>With Phone No.</option>
+          {% else %}
+          <option>With Phone No.</option>
+          {% endif %}
+          {% if number_option == 'No Phone No.' %}
+           <option selected>No Phone No.</option>
+          {% else %}
+          <option>No Phone No.</option>
+          {% endif %}
+
+        </select>
+
+        <label for="size-option" style="
+            margin: 30px 0px 30px 20px;
+
+
+            padding-left: 2px;
+          " >Company Size</label>
+        <select style="
+            margin: 30px 0px 30px 20px;
+            background-color: white;
+            border: none;
+            width: 150px;
+            height: 50px;
+            border-radius: 6px;
+            padding-left: 2px;
+          " name="size-option" id="size-option">
+          {% if size_option == '1 - 10' %}
+            <option selected>1 - 10</option>
+          {% else %}
+            <option>1 - 10</option>
+          {% endif %}
+
+          {% if size_option == '11 - 50' %}
+            <option selected>11 - 50</option>
+          {% else %}
+            <option>11 - 50</option>
+          {% endif %}
+
+          {% if size_option == '51 - 200' %}
+            <option selected>51 - 200</option>
+          {% else %}
+            <option>51 - 200</option>
+          {% endif %}
+
+
+          {% if size_option == '201 - 500' %}
+            <option selected>201 - 500</option>
+          {% else %}
+            <option>201 - 500</option>
+          {% endif %}
+
+
+          {% if size_option == '501 - 1000' %}
+            <option selected>501 - 1000</option>
+          {% else %}
+            <option>501 - 1000</option>
+          {% endif %}
+
+
+          {% if size_option == '1001 - 5000' %}
+            <option selected>1001 - 5000</option>
+          {% else %}
+            <option>1001 - 5000</option>
+          {% endif %}
+
+          {% if size_option == '5001 - 10,000' %}
+            <option selected>5001 - 10,000</option>
+          {% else %}
+            <option>5001 - 10,000</option>
+          {% endif %}
+
+          {% if size_option == '10,001+' %}
+            <option selected>10,001+</option>
+          {% else %}
+            <option>10,001+</option>
+          {% endif %}
+        </select>
+
+        <button
+          style="
+            margin: 30px 0px 30px 10px;
+            background-color: blue;
+            color:white;
+            border: none;
+            width: 100px;
+            height: 50px;
+            border-radius: 6px;
+          "
+          type="submit"
+          name="apply"
+          id="apply">
+          Apply
+        </button>
+
+
+        <button
+          style="
+            margin: 30px 0px 30px 10px;
+            background-color: green;
+            color:white;
+            border: none;
+            width: 150px;
+            height: 50px;
+            border-radius: 6px;
+          "
+          type="submit"
+          name="export"
+          id="export">
+          Export Excel
         </button>
       </form>
       <div class="table-wrapper">
@@ -361,8 +510,8 @@
             {% if num == page_obj.number %}
             <a class="active" href="#">{{ num }}</a>
             {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-                {% if query %}
-                <a href="?page={{ num }}&search={{ query }}">{{ num }}</a>
+                {% if query or email_option %}
+                <a href="?page={{ num }}&search={{ query }}&email-option={{ email_option }}&number-option={{ number_option }}&size-option={{ size_option }}">{{ num }}</a>
                 {% else %}
                 <a href="?page={{ num }}">{{ num }}</a>
                 {% endif %}
@@ -370,8 +519,8 @@
         {% endfor %}
         
         {% if page_obj.has_next %}
-            {% if query %}
-            <a href="?page={{ page_obj.next_page_number }}&search={{ query }}">&raquo;</a>
+            {% if query or email_option %}
+            <a href="?page={{ page_obj.next_page_number }}&search={{ query }}&email-option={{ email_option }}&number-option={{ number_option }}&size-option={{ size_option }}">&raquo;</a>
             {% else %}
             <a href="?page={{ page_obj.next_page_number }}">&raquo;</a>
             {% endif %}

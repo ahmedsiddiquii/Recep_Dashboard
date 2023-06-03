@@ -255,7 +255,7 @@
             </li>
 
             <li class="nav-link">
-              <a href="{% url 'jobs' %}">
+              <a href="{% url 'jobs_task' %}">
                 <i class="bx bx-bar-chart-alt-2 icon"></i>
                 <span class="text nav-text">Jobs</span>
               </a>
@@ -277,9 +277,13 @@
     </nav>
 
     <section class="home">
-  <form action="{% url 'jobs' %}" method="post">
-      {% csrf_token %}
-          <input
+
+      <form action="{% url 'apply_export' %}" method="get">
+        <div>
+            {% for jt in job_tasks %}
+            <input hidden="True" id="{{ jt }}" name="{{ jt }}">
+            {% endfor %}
+            <input
           style="
             margin: 30px 0px 30px 110px;
             background-color: white;
@@ -307,8 +311,148 @@
           type="submit">
           Search
         </button>
-        </form>
-    <h2 style="color:#347afe; margin-right: 30%;">Jobs</h2>
+        </div>
+        <select style="
+            margin: 10px 0px 30px 110px;
+            background-color: white;
+            border: none;
+            width: 150px;
+            height: 50px;
+            border-radius: 6px;
+            padding-left: 10px;
+          " name="email-option" id="email-option">
+          <option>Show All</option>
+          {% if email_option == "With emails" %}
+          <option selected>With emails</option>
+          {% else %}
+
+          <option>With emails</option>
+          {% endif %}
+          {% if email_option == 'No emails' %}
+           <option selected>No emails</option>
+          {% else %}
+          <option>No emails</option>
+          {% endif %}
+        </select>
+
+
+        <select style="
+            margin: 30px 0px 30px 20px;
+            background-color: white;
+            border: none;
+            width: 150px;
+            height: 50px;
+            border-radius: 6px;
+            padding-left: 2px;
+          " name="number-option" id="number-option">
+          <option>Show All</option>
+          {% if number_option == 'With Phone No.' %}
+          <option selected>With Phone No.</option>
+          {% else %}
+          <option>With Phone No.</option>
+          {% endif %}
+          {% if number_option == 'No Phone No.' %}
+           <option selected>No Phone No.</option>
+          {% else %}
+          <option>No Phone No.</option>
+          {% endif %}
+        </select>
+
+        <label for="platform-option" style="
+            margin: 30px 0px 30px 20px;
+
+
+            padding-left: 2px;
+          " >Platform</label>
+        <select style="
+            margin: 30px 0px 30px 20px;
+            background-color: white;
+            border: none;
+            width: 150px;
+            height: 50px;
+            border-radius: 6px;
+            padding-left: 2px;
+          " name="platform-option" id="platform-option">
+            <option>All Platforms</option>
+            {% if platform_option == 'Linkedin' %}
+            <option selected>Linkedin</option>
+            {% else %}
+            <option>Linkedin</option>
+            {% endif %}
+
+
+            {% if platform_option == 'GlassDoor' %}
+            <option selected>GlassDoor</option>
+            {% else %}
+            <option>GlassDoor</option>
+            {% endif %}
+
+            {% if platform_option == 'Indeed' %}
+            <option selected>Indeed</option>
+            {% else %}
+            <option>Indeed</option>
+            {% endif %}
+
+            {% if platform_option == 'Linkedin and GlassDoor' %}
+            <option selected>Linkedin and GlassDoor</option>
+            {% else %}
+            <option>Linkedin and GlassDoor</option>
+            {% endif %}
+
+
+            {% if platform_option == 'Linkedin and Indeed' %}
+            <option selected>Linkedin and Indeed</option>
+            {% else %}
+            <option>Linkedin and Indeed</option>
+            {% endif %}
+
+            {% if platform_option == 'GlassDoor and Indeed' %}
+            <option selected>GlassDoor and Indeed</option>
+            {% else %}
+            <option>GlassDoor and Indeed</option>
+            {% endif %}
+
+
+
+
+
+        </select>
+
+        <button
+          style="
+            margin: 30px 0px 30px 10px;
+            background-color: blue;
+            color:white;
+            border: none;
+            width: 100px;
+            height: 50px;
+            border-radius: 6px;
+          "
+          type="submit"
+          name="apply"
+          id="apply">
+          Apply
+        </button>
+
+
+        <button
+          style="
+            margin: 30px 0px 30px 10px;
+            background-color: green;
+            color:white;
+            border: none;
+            width: 150px;
+            height: 50px;
+            border-radius: 6px;
+          "
+          type="submit"
+          name="export"
+          id="export">
+          Export Excel
+        </button>
+          <h3 style="color:black;margin: 30px 0px 30px 110px;">Total Data: {{ data_length }}</h3>
+      </form>
+
     <div style ="width:50%;" class="table-wrapper">
 
     <table class="fl-table">
@@ -337,7 +481,11 @@
                 <td>{{ item.company_name}}</td>
                 <td>{{ item.company_website}}</td>
                 <td>{{ item.source_website}}</td>
+                {% if item.company_email == '-' %}
+                <td><a href="{% url 'get_job_email' %}?id= {{ item.id }}">Get Email</a></td>
+                {% else %}
                 <td>{{ item.company_email}}</td>
+                {% endif %}
                 <td>{{ item.company_phone_number}}</td>
                 <td>{{ item.description|slice:":100" }}....</td>
                 <td>{{ item.source_link}}</td>
@@ -359,19 +507,19 @@
             {% if num == page_obj.number %}
             <a class="active" href="#">{{ num }}</a>
             {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-                {% if query %}
-                <a href="?page={{ num }}&search={{ query }}">{{ num }}</a>
+                {% if query or email_option %}
+                <a href="?{{job_page_change}}&page={{ num }}&search={{ query }}&email-option={{ email_option }}&number-option={{ number_option }}&platform-option={{ platform_option }}">{{ num }}</a>
                 {% else %}
-                <a href="?page={{ num }}">{{ num }}</a>
+                <a href="?{{job_page_change}}&page={{ num }}">{{ num }}</a>
                 {% endif %}
             {% endif %}
         {% endfor %}
 
         {% if page_obj.has_next %}
-            {% if query %}
-            <a href="?page={{ page_obj.next_page_number }}&search={{ query }}">&raquo;</a>
+            {% if query or email_option %}
+            <a href="?{{job_page_change}}&page={{ page_obj.next_page_number }}&search={{ query }}&email-option={{ email_option }}&number-option={{ number_option }}&platform-option={{ platform_option }}">&raquo;</a>
             {% else %}
-            <a href="?page={{ page_obj.next_page_number }}">&raquo;</a>
+            <a href="?{{job_page_change}}&page={{ page_obj.next_page_number }}">&raquo;</a>
             {% endif %}
         {% else %}
         <a class="disabled">&raquo;</a>

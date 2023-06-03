@@ -18,7 +18,7 @@ import pickle
 
 # Set up your OpenAI API credentials
 openai.api_key = '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'
-
+all_history=[]
 #similarity between two company names
 def calculate_similarity(company_name_1, company_name_2):
     prompt = f"Company 1: {company_name_1}\nCompany 2: {company_name_2}\nCalculate similarity percentage:"
@@ -45,14 +45,14 @@ def extract_emails(text):
 #this function open website and go into contact page them extact html body and email
 def scrape_contact_info(url):
     chrome_options = Options()
-    chrome_options.add_argument("--headless")
+    # chrome_options.add_argument("--headless")
     driver = webdriver.Chrome(options=chrome_options)
     driver.get(url)
     time.sleep(2)
     try:
 
         # Check header and footer links for "Impressum" or "Imprint"
-        header_links = driver.find_element("xpath", "//a[contains(text(), 'Impressum') or contains(text(), 'Imprint')]")
+        header_links = driver.find_element("xpath", "//a[contains(text(), 'Impressum') or contains(text(), 'Imprint') or contains(text(), 'Contact') or contains(text(), 'contact')]")
         # footer_links = driver.find_elements('footer a')
         links = header_links.get_attribute("href")
         driver.get(links)
@@ -135,6 +135,8 @@ class Linkedin:
                     print(tit)
 
                     comp = driver.find_element(by='xpath', value='//div[@class="topcard__flavor-row"]//span//a').text
+                    if {"keword": keyword, 'company_name': comp, 'job_title': tit} in all_history:
+                        continue
                     # time.sleep(2)
                     driver.find_element(by='xpath',
                                         value='//button[@aria-label="Show more, visually expands previously read content above"]').click()
@@ -152,6 +154,7 @@ class Linkedin:
                          'company_website': link,
                          "source_link": source_url, "source_website": "Linkedin", "company_email": str(email),
                          "company_phone_number": "-","location":location})
+                    all_history.append({"keword": keyword, 'company_name': comp, 'job_title': tit})
                     history.append(i)
                 except:
                     pass
@@ -259,12 +262,14 @@ class GlassDoor:
                     break
                 try:
                     actions.move_to_element(value).click().perform()
-                    time.sleep(1)
+                    time.sleep(1.5)
                     company = driver.find_element(by='xpath', value='//div[@data-test="employerName"]').text
 
                     title = driver.find_element(by='xpath', value='//div[@data-test="jobTitle"]').text
                     print(title)
                     location=driver.find_element("xpath","//div[@data-test='location']").text
+                    if {"keword": search_keyword, 'company_name': company, 'job_title': title} in all_history:
+                        continue
                     try:
                         show_more = driver.find_element(by='xpath', value='//div[@class="css-t3xrds e856ufb4"]')
                         actions.move_to_element(show_more).click().perform()
@@ -275,8 +280,11 @@ class GlassDoor:
                 except Exception as e:
                     print(e)
                     pass
-                source_url=driver.find_element("xpath",f"(//a[@data-test='job-link'])[{i+1}]").get_attribute('href')
-                link = self.get_first_google_link(company)
+                try:
+                    source_url=driver.find_element("xpath",f"(//a[@data-test='job-link'])[{i+1}]").get_attribute('href')
+                    link = self.get_first_google_link(company)
+                except:
+                    link=""
                 try:
                     emails=scrape_contact_info(link)
                 except:
@@ -284,6 +292,7 @@ class GlassDoor:
                 data.append({"keword":search_keyword,'company_name': company, 'job_title': title, 'description': description, 'company_website': link,
                              "source_link":source_url,"source_website":"GlassDoor",
                              "company_email":str(emails),"company_phone_number":"-","location":location})
+                all_history.append({"keword": search_keyword, 'company_name': company, 'job_title': title})
             try:
                 next=driver.find_element("xpath","//button[@aria-label='Next'][@disabled]")
                 break
@@ -408,6 +417,8 @@ class Talent:
                 tit = driver.find_element(by='xpath',
                                           value='//div[@class="jobPreview__header--title"]').text
                 comp = driver.find_element(by='xpath', value='//div[@class="jobPreview__header--company"]').text
+                if {"keword": keyword, 'company_name': comp, 'job_title': tit} in all_history:
+                    continue
                 desc = driver.find_element(by='xpath', value='//div[@class="jobPreview__body--description"]').text
                 location=driver.find_element("xpath","//div[@class='jobPreview__header--location']").text
                 try:
@@ -423,6 +434,7 @@ class Talent:
                      'company_website': link,
                      "source_link": source_url, "source_website": "Talent", "company_email": str(emails),
                      "company_phone_number": "-","location":location})
+                all_history.append({"keword": keyword, 'company_name': comp, 'job_title': tit})
             try:
                 driver.find_element("xpath","//span[@class='page-next page ']//parent::a").click()
                 time.sleep(2)
@@ -534,6 +546,8 @@ class Indeed:
                     comp = driver.find_element(by='xpath', value='//div[@data-company-name="true"]//a').text
                     desc = driver.find_element(by='xpath', value='//div[@id="jobDescriptionText"]').text
                     print(comp)
+                    if {"keword": keyword, 'company_name': comp, 'job_title': tit} in all_history:
+                        continue
                     try:
                         link = self.get_first_google_link(comp)
                         print(link)
@@ -549,6 +563,7 @@ class Indeed:
                          'company_website': link,
                          "source_link": source_url, "source_website": "Indeed", "company_email": str(email),
                          "company_phone_number": "-","location":location})
+                    all_history.append({"keword": keyword, 'company_name': comp, 'job_title': tit})
                 except Exception as e:
 
                     pass

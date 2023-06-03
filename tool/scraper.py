@@ -1,10 +1,14 @@
 from .bot.modules.LeadGenerater import Lead_Generator
 from .bot.modules.Job_Scraper import *
-from .models import Leads,Task,Job
+from .models import Leads,Task,Job,JobTask
 import threading
+from django.utils import timezone
+from datetime import datetime, timedelta
+
+from time import sleep
 
 
-def glass_door_thread(filter_url,no_of_leads,id):
+def glass_door_thread(filter_url,no_of_leads,instance):
     keyword = filter_url
     no_of_jobs = no_of_leads
     obj = GlassDoor()
@@ -16,13 +20,12 @@ def glass_door_thread(filter_url,no_of_leads,id):
     print(all_data)
     for data in all_data:
         print(data)
+        data['task_id'] = instance.id
         lead = Job(**data)
         lead.save()
-    task = Task.objects.get(id=id)
-    task.status = "completed"
-    task.save()
 
-def linkedin_thread(filter_url, no_of_leads, id):
+
+def linkedin_thread(filter_url, no_of_leads, instance):
         keyword = filter_url
         no_of_jobs = no_of_leads
         obj = Linkedin()
@@ -34,14 +37,13 @@ def linkedin_thread(filter_url, no_of_leads, id):
         print(all_data)
         for data in all_data:
             print(data)
+            data['task_id'] = instance.id
             lead = Job(**data)
             lead.save()
-        task = Task.objects.get(id=id)
-        task.status = "completed"
-        task.save()
 
 
-def indeed_thread(filter_url, no_of_leads, id):
+
+def indeed_thread(filter_url, no_of_leads, instance):
     keyword = filter_url
     no_of_jobs = no_of_leads
     obj = Indeed()
@@ -53,12 +55,11 @@ def indeed_thread(filter_url, no_of_leads, id):
     print(all_data)
     for data in all_data:
         print(data)
+        data['task_id'] = instance.id
         lead = Job(**data)
         lead.save()
-    task = Task.objects.get(id=id)
-    task.status = "completed"
-    task.save()
-def talent_thread(filter_url, no_of_leads, id):
+
+def talent_thread(filter_url, no_of_leads, instance):
     keyword = filter_url
     no_of_jobs = no_of_leads
     obj = Talent()
@@ -70,11 +71,10 @@ def talent_thread(filter_url, no_of_leads, id):
     print(all_data)
     for data in all_data:
         print(data)
+        data['task_id']=instance.id
         lead = Job(**data)
         lead.save()
-    task = Task.objects.get(id=id)
-    task.status = "completed"
-    task.save()
+
 def do_thread(existing_data,linkedin_email,linkedin_password,no_of_leads,filter_url,id,status):
     if status=="lead":
         obj = Lead_Generator()
@@ -90,19 +90,45 @@ def do_thread(existing_data,linkedin_email,linkedin_password,no_of_leads,filter_
         task = Task.objects.get(id=id)
         task.status="completed"
         task.save()
-    else:
-        if "linkedin" in filter_url:
-            l = threading.Thread(target=linkedin_thread, args=(filter_url, no_of_leads, id,))
-            l.start()
-        if "glassdoor" in filter_url:
-            g = threading.Thread(target=glass_door_thread, args=(filter_url, no_of_leads, id,))
-            g.start()
-        if "talent" in filter_url:
-            t = threading.Thread(target=talent_thread, args=(filter_url, no_of_leads, id,))
-            t.start()
-        if "indeed" in filter_url:
-            i = threading.Thread(target=indeed_thread, args=(filter_url, no_of_leads, id,))
-            i.start()
+def do_thread_job(existing_data,instance):
+
+    linkedin_link=instance.linkedin_link
+    glassdoor_link=instance.glassdoor_link
+    indeed_link=instance.indeed_link
+    threads=[]
+    # print([linkedin_link,glassdoor_link,indeed_link])
+    if linkedin_link!="":
+        s1=threading.Thread(target=linkedin_thread,args=(linkedin_link,10,instance,))
+
+        threads.append(s1)
+
+
+    if glassdoor_link!="":
+        s2=threading.Thread(target=glass_door_thread,args=(glassdoor_link,10,instance,))
+
+        threads.append(s2)
+
+
+    if indeed_link!="":
+        s3=threading.Thread(target=indeed_thread,args=(indeed_link,10,instance,))
+
+        threads.append(s3)
+    for t in threads:
+        t.start()
+        sleep(0.5)
+    for t in threads:
+        t.join()
+
+    instance.last_updated = timezone.now()
+    instance.next_update = instance.last_updated + timedelta(days=1)
+    instance.activity_status = "Stop"
+    instance.save()
+
+def thread_custom_email_job(object):
+    website=object.company_website
+    emails=scrape_contact_info(website)
+    object.company_email = emails
+    object.save()
 
 
 

@@ -245,7 +245,7 @@ h2{
           </li>
 
           <li class="nav-link">
-            <a href="{% url 'jobs' %}">
+            <a href="{% url 'jobs_task' %}">
               <i class='bx bx-bar-chart-alt-2 icon'></i>
               <span class="text nav-text">Jobs</span>
             </a>
@@ -274,8 +274,10 @@ h2{
 <section class="home"> 
   <form action="{% url 'task' %}" method="post">
       {% csrf_token %}
-          <input style="margin:10px 0px 10px ;background-color:white;border:none;width:600px;height:50px;border-radius:6px;padding-left: 10px;" type="text" placeholder="Navigator Link / Jobs" name="navigator_link" style="width: 65%;">
-    <input style="margin:10px 0px 10px ;background-color:white;border:none;width:200px;height:50px;border-radius:6px;text-align: center;" type="text" placeholder="No. Of leads/No. Of Jobs" name="no_of_leads" style="width: 65%;">
+      <input style="margin:10px 0px 10px ;background-color:white;border:none;width:300px;height:50px;border-radius:6px;padding-left: 10px;" type="text" placeholder="Friendly Name" name="friendly_name" style="width: 65%;">
+          <input style="margin:10px 0px 10px ;background-color:white;border:none;width:600px;height:50px;border-radius:6px;padding-left: 10px;" type="text" placeholder="Navigator Link" name="navigator_link" style="width: 65%;">
+    <input style="margin:10px 0px 10px ;background-color:white;border:none;width:200px;height:50px;border-radius:6px;text-align: center;" type="text" placeholder="No. Of leads" name="no_of_leads" style="width: 65%;">
+
     <button style="margin:30px 0px 30px 10px;background-color:white;border:none;width:100px;height:50px;border-radius:6px;" type="submit">Add</button>
         </form>
     <h2 style="color:#347afe; margin-right: 30%;">Pending Tasks</h2>
@@ -284,6 +286,7 @@ h2{
     <table class="fl-table">
         <thead>
             <tr>
+                <th scope="col">Friendly Name</th>
                 <th scope="col">Number of leads</th>
                 <th scope="col">Status</th>
                 <th scope="col">Sales Nvigator Link</th>
@@ -293,6 +296,7 @@ h2{
         <tbody>
             {% for item in page_obj %}
             <tr>
+                <td>{{ item.friendly_name }}</td>
                 <td>{{ item.no_of_leads }}</td>
                 <td>{{ item.status }}</td>
                 <td><a href="{{ item.navigator_link }}" class="button">Go To Filtered Page</a></td>
