@@ -1,10 +1,10 @@
 
 from time import sleep
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.action_chains import ActionChains
-from openpyxl import load_workbook,Workbook
-from openpyxl.styles import Font, PatternFill
-from openpyxl.utils import get_column_letter
+# from selenium.webdriver.common.keys import Keys
+# from selenium.webdriver.common.action_chains import ActionChains
+# from openpyxl import load_workbook,Workbook
+# from openpyxl.styles import Font, PatternFill
+# from openpyxl.utils import get_column_letter
 
 from selenium import webdriver
 from time import sleep
@@ -16,7 +16,10 @@ from selenium.webdriver.common.action_chains import ActionChains
 import datetime
 import webdriver_manager
 import pandas as pd
-import pyautogui
+try:
+    import pyautogui
+except:
+    pass
 import clipboard
 import csv
 from openpyxl import load_workbook
